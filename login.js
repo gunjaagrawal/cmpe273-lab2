@@ -37,14 +37,29 @@ Login.prototype.login = function(_name, _email) {
 	return sessionId;
 };
 
+Login.prototype.refresh = function(sessionId) {
+   var sessionId_new;
+   if(sessionId in this.sessionMap){
+       sessionId_new = new Date().getTime();
+       this.sessionMap[sessionId_new] = { name: this.sessionMap[sessionId].name, email: this.sessionMap[sessionId].email } 
+       delete this.sessionMap[sessionId];
+   }
+	
+	console.log('new session id ' + sessionId_new + ' for login::' + this.sessionMap[sessionId_new].email);
+	return sessionId_new;
+};
+
 /**
  * Logout from the server
  */ 
 Login.prototype.logout = function(sessionId) {
 	console.log('logout::' + sessionId);
    /*
-	* TODO: Remove the given sessionId from the sessionMap
+	* Remove the given sessionId from the sessionMap
 	*/
+    if(sessionId in this.sessionMap){
+       delete this.sessionMap[sessionId];
+    }
 };
 
 // Export the Login class
